@@ -3,17 +3,21 @@ const searchBook = () => {
     const searchText = searchField.value;
     // console.log(searchText);
     searchField.value = '';
-    const url = `https://openlibrary.org/search.json?q=${searchText}`;
+    const url = `https://openlibrary.org/search.json?q=${searchText}&limit=24`;
 
     // console.log(url);
     fetch(url)
         .then(res => res.json())
-        .then(data => displaySearchresult(data.docs));
-
+        .then((data) => {
+            displaySearchresult(data.docs);
+            const resultNumber = document.getElementById('searching-result');
+            resultNumber.innerText = `showing ${data.docs.length} results of ${data.numFound}`;
+        });
 }
 
 const displaySearchresult = docs => {
     const searchResult = document.getElementById('search-result');
+    searchResult.textContent = "";
     docs.forEach(doc => {
         console.log(doc);
         const div = document.createElement('div');
@@ -32,3 +36,4 @@ const displaySearchresult = docs => {
         searchResult.appendChild(div);
     })
 }
+
